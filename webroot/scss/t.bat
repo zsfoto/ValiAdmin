@@ -1,0 +1,1 @@
+sass -w table.scss ../css/table.css

@@ -1,0 +1,54 @@
+@import './components/vars';
+
+.tile {
+	border-radius: 5px;
+	border: 2px solid #bbb;
+	&-footer {
+		border-top: 1px solid #eee;
+	}
+}
+table a {
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+}
+table tr {
+	& th {
+		border-bottom: 1px solid black !important;
+	}	
+	& th.id, & td.id {
+		width: 60px;
+		text-align: center;
+	}
+	& th.date, & td.date {
+		width: 160px;
+		text-align: center;
+	}
+	& th.time, & td.time {
+		width: 160px;
+		text-align: center;
+	}
+	& th.datetime, & td.datetime {
+		width: 160px;
+		text-align: center;
+	}
+	& th.number, & td.number {
+		text-align: center;
+		width: 160px;
+	}
+	& td.number {
+		text-align: right;
+		padding-right: 10px;
+	}
+	& th.actions, & td.actions {
+		width: 160px;
+		text-align: center;
+	}
+	& td.actions a{
+		margin-right: 5px;
+	}
+}
+
+
+
+

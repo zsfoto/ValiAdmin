@@ -1,0 +1,25 @@
+$body-font: 'Lato', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$white: #FFF;
+// ------ Primary Colors from google material design color palette ------
+// Blue  : #1565C0
+// Teal  : #00695C
+// Green : #2E7D32
+// Brown : #4E342E
+// Purple: #4527A0
+
+$primary-color: #4980B5;
+$app-content: #E3DED4;
+
+
+
+
+$complementry-color: adjust_hue($primary-color, 180);
+$sidebar-width: 230px;
+$sidebar-color: #222d32;
+// dark  : #222d32
+// light : #f8f8f8
+$sidebar-accent: dark;
+$sidebar-dark-color: #fff;
+$sidebar-dark-link-color: #fff;
+$sidebar-light-color: #000;
+$sidebar-light-link-color: #333;

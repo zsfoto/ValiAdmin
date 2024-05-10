@@ -1,0 +1,50 @@
+.tile {
+  border-radius: 5px;
+  border: 2px solid #bbb;
+}
+.tile-footer {
+  border-top: 1px solid #eee;
+}
+
+table a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+table tr th {
+  border-bottom: 1px solid black !important;
+}
+table tr th.id, table tr td.id {
+  width: 60px;
+  text-align: center;
+}
+table tr th.date, table tr td.date {
+  width: 160px;
+  text-align: center;
+}
+table tr th.time, table tr td.time {
+  width: 160px;
+  text-align: center;
+}
+table tr th.datetime, table tr td.datetime {
+  width: 160px;
+  text-align: center;
+}
+table tr th.number, table tr td.number {
+  text-align: center;
+  width: 160px;
+}
+table tr td.number {
+  text-align: right;
+  padding-right: 10px;
+}
+table tr th.actions, table tr td.actions {
+  width: 160px;
+  text-align: center;
+}
+table tr td.actions a {
+  margin-right: 5px;
+}
+
+/*# sourceMappingURL=table.css.map */

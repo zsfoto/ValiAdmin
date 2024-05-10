@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery Cookies Message Plugin Demo</title>
+
+		<!-- Import CSS -->
+    <link href="dist/cookies-message.min.css" rel="stylesheet">
+
+		<!-- Import JQuery library and the Cookies Message Plugin -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="dist/cookies-message.min.js"></script>
+
+		<!-- Initialize the Cookies Message Plugin -->
+    <script>
+
+      $(document).ready(function() {
+
+      	$.CookiesMessage({
+			messageText: "We use technical and analytics cookies to ensure that we give you the best experience on our website.",
+			messageBg: "#151515",								// Message box background color
+			messageColor: "#FFFFFF",						// Message box text color
+			messageLinkColor: "#F0FFAA",				// Message box links color
+			closeEnable: true,									// Show the close icon
+			closeColor: "#444444",							// Close icon color
+			closeBgColor: "#000000",						// Close icon background color
+			acceptEnable: true,									// Show the Accept button
+			acceptText: "Accept & Close",				// Accept button text
+			infoEnable: true,										// Show the More Info button
+			infoText: "More Info",							// More Info button text
+			infoUrl: "#",												// More Info button URL
+			cookieExpire: 180										// Cookie expire time (days)
+		});
+
+      });
+
+    </script>
+
+		<!-- Demo Style (do not copy this) -->
+		<style>
+			body { font-family: Arial, sans; background-color:#16A085; color:#fff; }
+			.container { width: 70%; margin: 0 auto; }
+			ul li { padding: 5px 0;}
+		</style>
+
+</head>
+
+<body>
+
+	<div class="container">
+		<h1>JQuery Cookies Message Plugin Demo</h1>
+		<div class="jquery-script-ads"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-2783044520727903";
+/* jQuery_demo */
+google_ad_slot = "2780937993";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+	</div>
+
+</body>
+</html>
