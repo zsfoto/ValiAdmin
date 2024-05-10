@@ -1,0 +1,204 @@
+{#
+/**
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
+ * @since         2.0.0
+ * @license       https://www.opensource.org/licenses/mit-license.php MIT License
+ */
+#}
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var iterable<\App\Model\Entity\Post> $posts
+ */
+	$this->assign('AppTitle', __('Posts table'));
+	//$this->assign('AppSubTitle', __('New posts'));
+	$this->assign('BreadCrumbTitle', __('Add New Post'));
+	$this->assign('AppTitleIcon', 'bi bi-plus-square');
+?>
+{% set fields = Bake.filterFields(fields, schema, modelObject) %}
+		<div class="col-md-8">
+
+			<?= $this->Form->create(${{ singularVar }}, ['class' => 'form-horizontal shadow']) ?>
+
+				<div class="tile">
+					<div class="tile-title-w-btn"><!-- justify-content-end -->
+						<div class="col-2 text-start">
+							<?= $this->Html->link('<i class="bi bi-arrow-left-circle fs-5 me-2"></i>' . __('Back to list'), ['controller' => '{{ pluralHumanName }}', 'action' => 'index'], ['class' => 'btn btn-secondary', 'escapeTitle' => false]) ?><!-- Back link --!>
+						</div>
+						<div class="col-10 text-start">
+							<h3 class="title"><?= __('{{ action|humanize }}') ?></h3>
+						</div>
+					</div>
+					<div class="tile-body {{ pluralVar }}">
+{%- set done = [] %}
+{% for field in fields %}
+{%- if field not in primaryKey %}
+    {%- if keyFields[field] is defined %}
+        {%- set fieldData = Bake.columnData(field, schema) %}
+        {%- if fieldData.null %}
+						<?= $this->Form->control('{{ field }}', ['options' => ${{ keyFields[field] }}, 'empty' => true]) ?>
+						<div class="mb-3 row">
+							<label class="form-label col-md-2 text-end pt-1"><?= __('{{ field }}') ?>:</label>
+							<div class="col-md-9">
+								<?= $this->Form->control('{{ field }}', ['options' => ${{ keyFields[field] }}, 'label' => false, 'class' => 'select select-{{ field }}', 'empty' => true]) ?>
+								{{- "\n" }}
+							</div>
+						</div>
+						{{- "\n" }}
+
+        {%- else %}
+						<?= $this->Form->control('{{ field }}', ['options' => ${{ keyFields[field] }}, 'empty' => true]) ?>
+						<div class="mb-3 row">
+							<label class="form-label col-md-2 text-end pt-1"><?= __('{{ field }}') ?>:</label>
+							<div class="col-md-9">
+								<?= $this->Form->control('{{ field }}', ['options' => ${{ keyFields[field] }}, 'label' => false, 'class' => 'select select-{{ field }}']) ?>
+								{{- "\n" }}
+							</div>
+						</div>
+						{{- "\n" }}
+        {%- endif %}
+    {%- elseif field not in ['created', 'modified', 'updated'] %}
+        {%- set fieldData = Bake.columnData(field, schema) %}
+		{%- set autofocus = '' %}		
+        {%- if field in ['name'] %}
+			{%- set autofocus = ", 'autofocus' => true" %}		
+		{%- endif %}
+		{%- set empty = '' %}		
+        {%- if fieldData.null %}
+			{%- set empty = ", 'empty' => true" %}
+		{%- endif %}
+        {%- if fieldData.type in ['string'] %}
+						<!-- Char -->
+						<div class="mb-3 row">
+							<label class="form-label col-md-2 text-end pt-1"><?= __('{{ field|humanize }}') ?>:</label>
+							<div class="col-md-9">
+								<?= $this->Form->control('{{ field }}', ['placeholder' => '', 'label' => false, 'class' => 'form-control'{{ empty }}{{ autofocus }}]) ?>
+							</div>
+						</div>
+						{{- "\n" }}
+        {%- endif %}
+        {%- if fieldData.type in ['integer'] %}
+						<!-- Number -->
+						<div class="mb-3 row">
+							<label class="form-label col-md-2 text-end pt-1"><?= __('{{ field|humanize }}') ?>:</label>
+							<div class="col-md-9">
+								<?= $this->Form->control('{{ field }}', ['placeholder' => '', 'label' => false, 'class' => 'form-control'{{ empty }}]) ?>
+							</div>
+						</div>
+						{{- "\n" }}
+        {%- endif %}
+        {%- if fieldData.type in ['date'] %}
+						<!-- Date -->
+						<div class="mb-3 row">
+							<label class="form-label col-md-2 text-end pt-1"><?= __('{{ field|humanize }}') ?>:</label>
+							<div class="col-md-9">
+								<?= $this->Form->control('{{ field }}', ['placeholder' => '', 'label' => false, 'class' => 'form-control'{{ empty }}]) ?>
+							</div>
+						</div>
+						{{- "\n" }}
+        {%- endif %}
+        {%- if fieldData.type in ['time'] %}
+						<!-- Time -->
+						<div class="mb-3 row">
+							<label class="form-label col-md-2 text-end pt-1"><?= __('{{ field|humanize }}') ?>:</label>
+							<div class="col-md-9">
+								<?= $this->Form->control('{{ field }}', ['placeholder' => '', 'label' => false, 'class' => 'form-control'{{ empty }}]) ?>
+							</div>
+						</div>
+						{{- "\n" }}
+        {%- endif %}
+        {%- if fieldData.type in ['datetime'] %}
+						<!-- DateTime -->
+						<div class="mb-3 row">
+							<label class="form-label col-md-2 text-end pt-1"><?= __('{{ field|humanize }}') ?>:</label>
+							<div class="col-md-9">
+								<?= $this->Form->control('{{ field }}', ['placeholder' => '', 'label' => false, 'class' => 'form-control'{{ empty }}]) ?>
+							</div>
+						</div>
+						{{- "\n" }}
+        {%- endif %}
+        {%- if fieldData.type in ['boolean'] %}
+						<!-- Boolean -->
+						<div class="mb-3 row">
+							<label class="form-label col-md-2"></label>
+							<div class="col-md-9">
+								<div class="form-check">
+									<label class="form-check-label">
+										<?= $this->Form->checkbox('{{ field }}', ['label' => false, 'class' => 'form-check-input'{{ empty }}]) ?>
+										<?= __('{{ field|humanize }}') ?>
+									</label>
+								</div>
+							</div>
+						</div>
+						{{- "\n" }}
+        {%- endif %}
+		
+    {%- endif %}
+{%- endif %}
+{%- endfor %}
+{%- if associations.BelongsToMany is defined %}
+{%- for assocName, assocData in associations.BelongsToMany %}
+                    echo $this->Form->control('{{ assocData.property }}._ids', ['options' => ${{ assocData.variable }}]);
+                    {{- "\n" }}
+{%- endfor %}
+{% endif %}
+					</div>
+
+					<div class="tile-footer">
+						<div class="row">
+							<label class="form-label col-md-2"></label>
+							<div class="col-md-8 col-md-offset-3">
+								<?= $this->Form->button('<i class="bi bi-check-circle-fill me-2"></i>' . __('Save'), ['class' => 'btn btn-primary me-2', 'escapeTitle' => false]) ?>
+								<?= $this->Html->link('<i class="bi bi-x-circle-fill me-2"></i>' . __('Cancel'), ['controller' => 'Posts', 'action' => 'index'], ['class' => 'btn btn-secondary', 'escapeTitle' => false]) ?>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			<?= $this->Form->end() ?>
+
+		</div>
+
+<?php
+	$this->Html->css(
+		[
+			"ValiAdmin./plugins/select2-master/dist/css/select2.min",
+			"ValiAdmin./plugins/select2-bootstrap-5-theme-1.3.0/select2-bootstrap-5-theme.min.css",
+		],
+		['block' => true]
+	);
+
+	$this->Html->script(
+		[
+			'ValiAdmin./plugins/select2-master/dist/js/select2.full.min',
+			'ValiAdmin./plugins/select2-master/dist/js/i18n/hu',
+		],
+		['block' => 'scriptBottom']
+	); ?>
+
+	<?php $this->Html->scriptStart(['block' => 'javaScriptBottom']); ?>
+	
+		<!-- BEGIN Script bottom -->
+		$(document).ready(function() {
+
+			$('select').select2({
+				theme: "bootstrap-5",
+				width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+				placeholder: $(this).data('placeholder')
+				//allowClear: true
+			});
+
+		});
+		<!-- END Script bottom -->	
+	<?php $this->Html->scriptEnd(['block' => 'javaScriptBottom']); ?>
+
+	<?php //echo $this->element('ValiAdmin.bi_icons') ?>
