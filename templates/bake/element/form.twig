@@ -18,23 +18,33 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Post> $posts
  */
-	$this->assign('AppTitle', __('Posts table'));
-	//$this->assign('AppSubTitle', __('New posts'));
-	$this->assign('BreadCrumbTitle', __('Add New Post'));
-	$this->assign('AppTitleIcon', 'bi bi-plus-square');
+	$this->assign('title', __('{{ action|humanize }} {{ singularVar }}'));
+	$this->assign('AppTitle', __('{{ pluralHumanName }} table'));
+{%- set icon = 'bi bi-check2-square' %}
+{%- if action in ['add'] %}
+	{%- set icon = 'bi bi-plus-square' %}
+{%- endif %}
+{%- if action in ['edit'] %}
+	{%- set icon = 'bi bi-pencil-square' %}
+{%- endif %}
+	$this->assign('AppTitleIcon', '{{ icon }}');
+
+	//$this->assign('AppSubTitle', __('Recently {{ pluralVar }}'));
+	$this->assign('BreadCrumbTitle', __('{{ singularVar }}'));
 ?>
 {% set fields = Bake.filterFields(fields, schema, modelObject) %}
-		<div class="col-md-8">
+		<div class="col-md-12 col-lg-11 col-xxl-9">
 
 			<?= $this->Form->create(${{ singularVar }}, ['class' => 'form-horizontal shadow']) ?>
 
 				<div class="tile">
 					<div class="tile-title-w-btn"><!-- justify-content-end -->
-						<div class="col-2 text-start">
-							<?= $this->Html->link('<i class="bi bi-arrow-left-circle fs-5 me-2"></i>' . __('Back to list'), ['controller' => '{{ pluralHumanName }}', 'action' => 'index'], ['class' => 'btn btn-secondary', 'escapeTitle' => false]) ?><!-- Back link -->
+						<div class="col-md-3 col-lg-2 col-lg-2 text-start">
+							<?= $this->Html->link('<i class="bi bi-arrow-left-circle fs-5 me-2"></i>' . __('Back'), ['controller' => '{{ pluralHumanName }}', 'action' => 'index'], ['class' => 'btn btn-secondary', 'escapeTitle' => false]) ?>
+
 						</div>
-						<div class="col-10 text-start">
-							<h3 class="title"><?= __('{{ action|humanize }}') ?></h3>
+						<div class="col-md-9 col-lg-9 t col-xl-10 text-start">
+							<h3 class="title"><?= __('{{ action|humanize }} {{ singularVar }}') ?></h3>
 						</div>
 					</div>
 					<div class="tile-body {{ pluralVar }}">
@@ -50,16 +60,16 @@
 						{{- "\n" }}
         {%- if fieldData.null %}
 						<div class="mb-3 row"><!-- 1. -->
-							<label class="form-label col-md-2 text-end pt-1"><?= __('{{ field }}') ?>:</label>
-							<div class="col-md-9">
+							<label class="form-label col-sm-12 col-md-3 col-lg-3 col-xl-2 col-xxl-2 text-xs-start text-sm-start text-md-end pt-1"><?= __('{{ field|humanize }}') ?>:</label>
+							<div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9">
 								<?= $this->Form->control('{{ field }}', ['options' => ${{ keyFields[field] }}, 'label' => false, 'class' => 'select select-{{ field }}', 'empty' => true]) ?>
 								{{- "\n" }}
 							</div>
 						</div>
         {%- else %}
 						<div class="mb-3 row"><!-- 2. -->
-							<label class="form-label col-md-2 text-end pt-1"><?= __('{{ field }}') ?>:</label>
-							<div class="col-md-9">
+							<label class="form-label col-sm-12 col-md-3 col-lg-3 col-xl-2 col-xxl-2 text-xs-start text-sm-start text-md-end pt-1"><?= __('{{ field|humanize }}') ?>:</label>
+							<div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9">
 								<?= $this->Form->control('{{ field }}', ['options' => ${{ keyFields[field] }}, 'label' => false, 'class' => 'select select-{{ field }}']) ?>
 								{{- "\n" }}
 							</div>
@@ -71,26 +81,34 @@
         {%- if field in ['name'] %}
 			{%- set autofocus = ", 'autofocus' => true" %}		
 		{%- endif %}
-		{%- set empty = '' %}		
+		{%- set empty = '' %}
         {%- if fieldData.null %}
 			{%- set empty = ", 'empty' => true" %}
 		{%- endif %}
+		{%- set readonly = '' %}
+        {%- if '_count' in field %}
+			{%- set readonly = ", 'readonly' => true" %}
+		{%- endif %}
+		{%- set disabled = '' %}
+        {%- if '_count' in field %}
+			{%- set disabled = ", 'disabled' => true" %}
+		{%- endif %}		
 						{{- "\n" }}
 						<!-- Type: {{ fieldData.type }} -->
 						{{- "\n" }}
         {%- if fieldData.type not in ['boolean', 'text'] %}
 						<div class="mb-3 row"><!-- 3. -->
-							<label class="form-label col-md-2 text-end pt-1"><?= __('{{ field|humanize }}') ?>:</label>
-							<div class="col-md-9">
-								<?= $this->Form->control('{{ field }}', ['placeholder' => '', 'label' => false, 'class' => 'form-control'{{ empty }}{{ autofocus }}]) ?>
+							<label class="form-label col-sm-12 col-md-3 col-lg-3 col-xl-2 col-xxl-2 text-xs-start text-sm-start text-md-end pt-1"><?= __('{{ field|humanize }}') ?>:</label>
+							<div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9">
+								<?= $this->Form->control('{{ field }}', ['placeholder' => '', 'label' => false, 'class' => 'form-control'{{ empty }}{{ readonly }}{{ disabled }}{{ autofocus }}]) ?>
 								{{- "\n" }}
 							</div>
 						</div>
         {%- endif %}
         {%- if fieldData.type in ['boolean'] %}
 						<div class="mb-3 row"><!-- 4. -->
-							<label class="form-label col-md-2"></label>
-							<div class="col-md-9">
+							<label class="form-label col-sm-12 col-md-3 col-lg-3 col-xl-2 col-xxl-2 text-xs-start text-sm-start text-md-end pt-1"></label>
+							<div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9">
 								<div class="form-check">
 									<label class="form-check-label">
 										<?= $this->Form->checkbox('{{ field }}', ['label' => false, 'class' => 'form-check-input'{{ empty }}]) ?>
@@ -102,8 +120,8 @@
         {%- endif %}
         {%- if fieldData.type in ['text'] %}
 						<div class="mb-3 row"><!-- 5. -->
-							<label class="form-label col-md-2 text-end pt-1"><?= __('{{ field|humanize }}') ?>:</label>
-							<div class="col-md-9">
+							<label class="form-label col-sm-12 col-md-3 col-lg-3 col-xl-2 col-xxl-2 text-xs-start text-sm-start text-md-end pt-1"><?= __('{{ field|humanize }}') ?>:</label>
+							<div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9">
 								<?= $this->Form->textarea('{{ field }}', ['placeholder' => '', 'rows' => '3', 'label' => false, 'class' => 'form-control'{{ empty }}]) ?>
 								{{- "\n" }}
 							</div>
@@ -115,15 +133,14 @@
 {%- if associations.BelongsToMany is defined %}
 {%- for assocName, assocData in associations.BelongsToMany %}
 	{%- set hasSelectField = '' %}
+						{{- "\n" }}
 						<div class="mb-3 row"><!-- 6. -->
-							<label class="form-label col-md-2 text-end pt-1"><?= __('{{ field|humanize }}') ?>:</label>
-							<div class="col-md-9">
-								<?= $this->Form->control('{{ assocData.property }}._ids', ['options' => ${{ assocData.variable }}, 'label' => false, 'class' => 'select select-{{ field }}']) ?>
+							<label class="form-label col-sm-12 col-md-3 col-lg-3 col-xl-2 col-xxl-2 text-xs-start text-sm-start text-md-end pt-1"><?= __('{{ assocData.property|humanize }}') ?>:</label>
+							<div class="col-sm-12 col-md-8 col-lg-8 col-xl-9 col-xxl-9">
+								<?= $this->Form->control('{{ assocData.property }}._ids', ['options' => ${{ assocData.variable }}, 'label' => false, 'class' => 'select select-{{ assocData.property }}']) ?>
 								{{- "\n" }}
 							</div>
 						</div>
-						{{- "\n" }}
-                    
 {%- endfor %}
 {% endif %}
 						{{- "\n" }}
@@ -131,8 +148,8 @@
 
 					<div class="tile-footer">
 						<div class="row">
-							<label class="form-label col-md-2"></label>
-							<div class="col-md-8 col-md-offset-3">
+							<label class="form-label col-sm-12 col-md-3 col-lg-3 col-xl-2 col-xxl-2 text-xs-start text-sm-start text-md-end pt-1 d-none d-md-block"></label>
+							<div class="col-md-9 col-lg-8 col-md-offset-2 text-center text-md-start">
 								<?= $this->Form->button('<i class="bi bi-check-circle-fill me-2"></i>' . __('Save'), ['class' => 'btn btn-primary me-3', 'escapeTitle' => false]) ?>
 								{{- "\n" }}
 								<?= $this->Html->link('<i class="bi bi-x-circle-fill me-2"></i>' . __('Cancel'), ['controller' => 'Posts', 'action' => 'index'], ['class' => 'btn btn-secondary', 'escapeTitle' => false]) ?>
@@ -150,6 +167,8 @@
 <?php
 	$this->Html->css(
 		[
+			//'ValiAdmin./plugins/sweetalert2/dist/sweetalert2.min',
+			//'ValiAdmin./plugins/summernote-0.8.18-dist/summernote-lite.min',
 			{{ hasSelectField }}"ValiAdmin./plugins/select2-master/dist/css/select2.min",
 			{{ hasSelectField }}"ValiAdmin./plugins/select2-bootstrap-5-theme-1.3.0/select2-bootstrap-5-theme.min.css",
 		],
@@ -158,6 +177,9 @@
 
 	$this->Html->script(
 		[
+			//'ValiAdmin./assets/sweetalert2/dist/sweetalert2.all.min',
+			//'ValiAdmin./assets/summernote-0.8.18-dist/summernote-lite.min',
+			//'ValiAdmin./assets/summernote-0.8.18-dist/lang/summernote-hu-HU',
 			{{ hasSelectField }}'ValiAdmin./plugins/select2-master/dist/js/select2.full.min',
 			{{ hasSelectField }}'ValiAdmin./plugins/select2-master/dist/js/i18n/hu',
 		],
@@ -165,6 +187,8 @@
 	); ?>
 
 	<?php $this->Html->scriptStart(['block' => 'javaScriptBottom']); ?>
+
+		//jeffAdminInitSummerNote('memo', 400, '<?= __("Here you can write the note") ?>...') // Init SummerNote for short_text.
 	
 		$(document).ready(function() {
 

@@ -32,14 +32,28 @@ table tr {
 		width: 160px;
 		text-align: center;
 	}
-	& th.number, & td.number {
+	& th.number, & td.number, & th.integer, & td.integer {
 		text-align: center;
 		width: 160px;
 	}
-	& td.number {
+	& td.number, td.integer {
 		text-align: right;
 		padding-right: 10px;
 	}
+	& th.boolean, & td.boolean {
+		text-align: center;
+		width: 80px;
+	}
+	
+	& th.counter, & td.counter {
+		text-align: center;
+		width: 80px;
+	}
+	& th.pos, & td.pos {
+		text-align: center;
+		width: 60px;
+	}
+	
 	& th.actions, & td.actions {
 		width: 160px;
 		text-align: center;
@@ -47,6 +61,24 @@ table tr {
 	& td.actions a{
 		margin-right: 5px;
 	}
+	
+	&.table-primary {
+		border-top: 2px solid blue;
+		border-bottom: 2px solid blue;
+	}
+	&.table-success {
+		border-top: 2px solid green;
+		border-bottom: 2px solid green;
+	}
+	&.table-warning {
+		border-top: 2px solid brown;
+		border-bottom: 2px solid brown;
+	}
+	&.table-danger {
+		border-top: 2px solid red;
+		border-bottom: 2px solid red;
+	}
+
 }
 
 

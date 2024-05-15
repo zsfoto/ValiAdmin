@@ -31,13 +31,25 @@ table tr th.datetime, table tr td.datetime {
   width: 160px;
   text-align: center;
 }
-table tr th.number, table tr td.number {
+table tr th.number, table tr td.number, table tr th.integer, table tr td.integer {
   text-align: center;
   width: 160px;
 }
-table tr td.number {
+table tr td.number, table tr td.integer {
   text-align: right;
   padding-right: 10px;
+}
+table tr th.boolean, table tr td.boolean {
+  text-align: center;
+  width: 80px;
+}
+table tr th.counter, table tr td.counter {
+  text-align: center;
+  width: 80px;
+}
+table tr th.pos, table tr td.pos {
+  text-align: center;
+  width: 60px;
 }
 table tr th.actions, table tr td.actions {
   width: 160px;
@@ -45,6 +57,22 @@ table tr th.actions, table tr td.actions {
 }
 table tr td.actions a {
   margin-right: 5px;
+}
+table tr.table-primary {
+  border-top: 2px solid blue;
+  border-bottom: 2px solid blue;
+}
+table tr.table-success {
+  border-top: 2px solid green;
+  border-bottom: 2px solid green;
+}
+table tr.table-warning {
+  border-top: 2px solid brown;
+  border-bottom: 2px solid brown;
+}
+table tr.table-danger {
+  border-top: 2px solid red;
+  border-bottom: 2px solid red;
 }
 
 /*# sourceMappingURL=table.css.map */

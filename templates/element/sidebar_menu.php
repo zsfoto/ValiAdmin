@@ -11,8 +11,12 @@
 		
 		<ul class="app-menu">
 			
-			<li><?= $this->Html->link('<i class="app-menu__icon bi bi-speedometer"></i><span class="app-menu__label">' . __('Posts') . '</span>', ['controller' => 'Posts', 'action' => 'index'], ['class' => 'app-menu__item', 'escapeTitle' => false]) ?></li>
-			<li><?= $this->Html->link('<i class="app-menu__icon bi bi-speedometer"></i><span class="app-menu__label">' . __('Tests') . '</span>', ['controller' => 'Tests', 'action' => 'index'], ['class' => 'app-menu__item', 'escapeTitle' => false]) ?></li>
+			<li><?= $this->Html->link('<i class="app-menu__icon bi bi-table"></i><span class="app-menu__label">' . __('Posts') . '</span>', ['controller' => 'Posts', 'action' => 'index'], ['class' => 'app-menu__item', 'escapeTitle' => false]) ?></li>
+			<li><?= $this->Html->link('<i class="app-menu__icon bi bi-table"></i><span class="app-menu__label">' . __('Tests') . '</span>', ['controller' => 'Tests', 'action' => 'index'], ['class' => 'app-menu__item', 'escapeTitle' => false]) ?></li>
+
+			<li><?= $this->Html->link('<i class="app-menu__icon bi bi-table"></i><span class="app-menu__label">' . __('Galleries') . '</span>', ['controller' => 'Galleries', 'action' => 'index'], ['class' => 'app-menu__item', 'escapeTitle' => false]) ?></li>
+			<li><?= $this->Html->link('<i class="app-menu__icon bi bi-table"></i><span class="app-menu__label">' . __('Photos') . '</span>', ['controller' => 'Photos', 'action' => 'index'], ['class' => 'app-menu__item', 'escapeTitle' => false]) ?></li>
+			<li><?= $this->Html->link('<i class="app-menu__icon bi bi-table"></i><span class="app-menu__label">' . __('GalleriesPhotos') . '</span>', ['controller' => 'GalleriesPhotos', 'action' => 'index'], ['class' => 'app-menu__item', 'escapeTitle' => false]) ?></li>
 			
 			<li class="treeview">
 			
@@ -22,7 +26,7 @@
 				<ul class="treeview-menu">
 					<li><a class="treeview-item" href="bootstrap-components.html"><i class="icon bi bi-circle-fill"></i> Bootstrap Elements</a></li>
 					<li>
-						<?= $this->Html->link('<i class="app-menu__icon bi bi-speedometer"></i><span class="app-menu__label">' . __('Creators') . '</span>', ['controller' => 'Creators', 'action' => 'index'], ['class' => 'treeview-item', 'escapeTitle' => false]) ?>
+						<?= $this->Html->link('<i class="app-menu__icon bi bi-table"></i><span class="app-menu__label">' . __('Creators') . '</span>', ['controller' => 'Creators', 'action' => 'index'], ['class' => 'treeview-item', 'escapeTitle' => false]) ?>
 
 						<a class="treeview-item" href="https://icons.getbootstrap.com/" target="_blank" rel="noopener"><i class="icon bi bi-circle-fill"></i>
 							Font Icons
