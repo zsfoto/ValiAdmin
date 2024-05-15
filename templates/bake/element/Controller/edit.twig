@@ -25,15 +25,30 @@
      */
     public function edit($id = null)
     {
-        ${{ singularName }} = $this->{{ currentModelName }}->get($id, contain: {{ Bake.exportArray(belongsToMany)|raw }});
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            ${{ singularName }} = $this->{{ currentModelName }}->patchEntity(${{ singularName }}, $this->request->getData());
-            if ($this->{{ currentModelName }}->save(${{ singularName }})) {
-                $this->Flash->success(__('The {{ singularHumanName|lower }} has been saved.'));
+		$redirect['action'] 		= 'index';
+		$redirect['?']['sort'] 		= $this->request->getQuery('id') ?? 'id';
+		$redirect['?']['direction'] = $this->request->getQuery('direction') ?? 'asc';
 
-                return $this->redirect(['action' => 'index']);
+		$limit = $this->request->getQuery('limit') ?? 2;
+		$page = $this->request->getQuery('page') ?? 1;
+		$lastId = $this->request->getQuery('lastId') ?? 0;
+
+        ${{ singularName }} = $this->{{ currentModelName }}->get($id, contain: {{ Bake.exportArray(belongsToMany)|raw }});		
+        if ($this->request->is(['patch', 'post', 'put'])) {
+			$data = $this->request->getData();
+			//debug($data); die();
+
+            ${{ singularName }} = $this->{{ currentModelName }}->patchEntity(${{ singularName }}, $data);
+            if ($this->{{ currentModelName }}->save(${{ singularName }})) {
+                //$this->Flash->success(__('The {{ singularHumanName|lower }} has been saved.'));
+                $this->Flash->success(__('Has been saved.'));
+				$redirect['?']['lastId'] = ${{ singularName }}->id;
+				//debug($redirect); die();
+
+                return $this->redirect($redirect);
             }
-            $this->Flash->error(__('The {{ singularHumanName|lower }} could not be saved. Please, try again.'));
+            //$this->Flash->error(__('The {{ singularHumanName|lower }} could not be saved. Please, try again.'));
+            $this->Flash->error(__('Could not be saved. Please, try again.'));
         }
 {% for assoc in belongsTo|merge(belongsToMany) %}
     {%- set otherName = Bake.getAssociatedTableAlias(modelObj, assoc) %}
@@ -42,5 +57,5 @@
         {{- "\n" }}
     {%- set compact = compact|merge(["'#{otherPlural}'"]) %}
 {% endfor %}
-        $this->set(compact({{ compact|join(', ')|raw }}));
+        $this->set(compact({{ compact|join(', ')|raw }}, 'limit', 'page', 'lastId'));
     }

@@ -26,8 +26,10 @@
 		$redirect['controller']	= '{{ currentModelName }}';
 		$redirect['action'] 	= 'index';
 
-		$limit = $this->request->getData('limit');
-		$page = $this->request->getData('page');
+		$sort 		= $this->request->getQuery('sort') ?? 'id';
+		$direction 	= $this->request->getQuery('direction') ?? 'asc';
+		$limit 		= $this->request->getQuery('limit') ?? 2;
+		$page 		= $this->request->getQuery('page') ?? 1;
 		
         $this->request->allowMethod(['post', 'delete']);
         ${{ singularName }} = $this->{{ currentModelName }}->get($id);
@@ -55,8 +57,10 @@
 			$page = $paging['pagingParams']['pageCount'];
 		}			
 
-		$redirect['?']['page'] 	= $page;
-		$redirect['?']['limit'] = $limit;
+		$redirect['?']['sort'] 		= $sort;
+		$redirect['?']['direction'] = $direction;
+		$redirect['?']['page'] 		= $page;
+		$redirect['?']['limit'] 	= $limit;
 
         return $this->redirect($redirect);
     }
