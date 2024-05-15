@@ -22,13 +22,41 @@
      */
     public function delete($id = null)
     {
+		$paginateOptions = [];
+		$redirect['controller']	= '{{ currentModelName }}';
+		$redirect['action'] 	= 'index';
+
+		$limit = $this->request->getData('limit');
+		$page = $this->request->getData('page');
+		
         $this->request->allowMethod(['post', 'delete']);
         ${{ singularName }} = $this->{{ currentModelName }}->get($id);
+
         if ($this->{{ currentModelName }}->delete(${{ singularName }})) {
-            $this->Flash->success(__('The {{ singularHumanName|lower }} has been deleted.'));
+            //$this->Flash->success(__('The {{ singularHumanName|lower }} has been deleted.'));
+            $this->Flash->success(__('Has been deleted.'));
         } else {
-            $this->Flash->error(__('The {{ singularHumanName|lower }} could not be deleted. Please, try again.'));
+            //$this->Flash->error(__('The {{ singularHumanName|lower }} could not be deleted. Please, try again.'));
+            $this->Flash->error(__('Could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+		if($limit) {
+			$paginateOptions['limit'] = $limit;
+		}
+		if($page) {
+			$paginateOptions['page'] = $page;
+		}
+		
+		$query = $this->{{ currentModelName }}->find();
+		try {
+			${{ pluralName }} = $this->paginate($this->{{ currentModelName }}, $paginateOptions);
+		} catch (NotFoundException $e) {
+			$paging = $e->getPrevious()->getAttributes('pagingParams');
+			$page = $paging['pagingParams']['pageCount'];
+		}			
+
+		$redirect['?']['page'] 	= $page;
+		$redirect['?']['limit'] = $limit;
+
+        return $this->redirect($redirect);
     }

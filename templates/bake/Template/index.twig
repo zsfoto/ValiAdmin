@@ -94,7 +94,7 @@
 {% set pk = '$' ~ singularVar ~ '->' ~ primaryKey[0] %}
 									<td class="actions">
 										<?= $this->Html->link(__('Edit'), ['action' => 'edit', {{ pk|raw }}], ['escape' => false, 'class' => 'me-3']) ?>
-										<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', {{ pk|raw }}], ['confirm' => __('Are you sure you want to delete # {0}?', {{ pk|raw }})]) ?>
+										<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', {{ pk|raw }}], ['data' => ['limit' => $limit, 'page' => $page], 'confirm' => __('Are you sure you want to delete # {0}?', {{ pk|raw }})]) ?>
 									</td>
 								</tr>
 								<?php endforeach; ?>

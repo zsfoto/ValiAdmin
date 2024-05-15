@@ -19,8 +19,10 @@
 #}
 {{ element('Bake.file_header', {
     namespace: "#{namespace}\\Controller#{prefix}",
-    classImports: (plugin or prefix) ? ["#{baseNamespace}\\Controller\\AppController"] : [],
+    classImports: (plugin or prefix) ? ["#{baseNamespace}\\Controller#{prefix}\\AppController"] : [],
 }) }}
+use Cake\Core\Configure;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * {{ name }} Controller
