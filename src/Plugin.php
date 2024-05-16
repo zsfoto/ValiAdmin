@@ -5,6 +5,7 @@ namespace ValiAdmin;
 
 use Cake\Console\CommandCollection;
 use Cake\Core\BasePlugin;
+use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Http\MiddlewareQueue;
@@ -26,6 +27,17 @@ class ValiAdminPlugin extends BasePlugin
      */
     public function bootstrap(PluginApplicationInterface $app): void
     {
+		
+		try {
+			Configure::load('valiadmin', 'default');
+		} catch (\Exception $e) {
+			try {
+				Configure::load('ValiAdmin.valiadmin', 'default');
+			} catch (\Exception $e) {
+				exit($e->getMessage() . "\n");
+			}
+		}
+		
     }
 
     /**

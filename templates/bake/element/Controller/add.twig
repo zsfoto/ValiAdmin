@@ -21,30 +21,19 @@
      */
     public function add()
     {
-		$redirect['action'] 		= 'index';
-		$redirect['?']['sort'] 		= $this->request->getQuery('id') ?? 'id';
-		$redirect['?']['direction'] = $this->request->getQuery('direction') ?? 'desc';
-
-		$limit = $this->request->getQuery('limit') ?? 2;
-		$page = $this->request->getQuery('page') ?? 1;
-		$lastId = $this->request->getQuery('lastId') ?? 0;
-
+		$this->set('title', __('Add new') . ': ' . __('{{ singularName }}') . ' ' . __('record'));
         ${{ singularName }} = $this->{{ currentModelName }}->newEmptyEntity();
         if ($this->request->is('post')) {
-			$data = $this->request->getData();
-			//debug($data); die();
-			
-            ${{ singularName }} = $this->{{ currentModelName }}->patchEntity(${{ singularName }}, $data);
+            ${{ singularName }} = $this->{{ currentModelName }}->patchEntity(${{ singularName }}, $this->request->getData());
             if ($this->{{ currentModelName }}->save(${{ singularName }})) {
-                //$this->Flash->success(__('The {{ singularHumanName|lower }} has been saved.'));
-                $this->Flash->success(__('Has been saved.'));
-				$redirect['?']['lastId'] = ${{ singularName }}->id;
-				//debug($redirect); die();
+                //$this->Flash->success(__('The {{ singularHumanName|lower }} has been saved.'), ['plugin' => 'JeffAdmin5']);
+                $this->Flash->success(__('The save has been: OK'), ['plugin' => 'JeffAdmin5']);
+				$this->session->write('Layout.' . $this->controller . '.LastId', ${{ singularName }}->id);
 
-                return $this->redirect($redirect);
+                return $this->redirect(['action' => 'index']);
             }
-            //$this->Flash->error(__('The {{ singularHumanName|lower }} could not be saved. Please, try again.'));
-            $this->Flash->error(__('Could not be saved. Please, try again.'));
+            //$this->Flash->error(__('The {{ singularHumanName|lower }} could not be saved. Please, try again.'), ['plugin' => 'JeffAdmin5']);
+            $this->Flash->error(__('The save has been not. Please check the datas and try again.'), ['plugin' => 'JeffAdmin5']);
         }
 {% set associations = Bake.aliasExtractor(modelObj, 'BelongsTo') %}
 {% set associations = associations|merge(Bake.aliasExtractor(modelObj, 'BelongsToMany')) %}
@@ -52,7 +41,7 @@
 {%- for assoc in associations %}
     {%- set otherName = Bake.getAssociatedTableAlias(modelObj, assoc) %}
     {%- set otherPlural = otherName|variable %}
-        ${{ otherPlural }} = $this->{{ currentModelName }}->{{ otherName }}->find('list', limit: 200, order: ['modified' => 'desc'])->all();
+        ${{ otherPlural }} = $this->{{ currentModelName }}->{{ otherName }}->find('list', limit: 200, order: ['pos' => 'asc', 'name' => 'asc'])->all();
         {{- "\n" }}
     {%- set compact = compact|merge(["'#{otherPlural}'"]) %}
 {% endfor %}

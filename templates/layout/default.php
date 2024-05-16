@@ -15,19 +15,48 @@
 		//'ValiAdmin./assets/sweetalert2/dist/sweetalert2.min',							// SeetAlert
 		'ValiAdmin./css/header',														// This FrameWork Header
 		'ValiAdmin./css/table',															// This FrameWork Table
+		'ValiAdmin./css/jeffadmin5',															// This FrameWork Table
 		//'ValiAdmin./css/valiadmin',														// This FrameWork Main css
 	]) ?><!-- Main CSS-->
 	<?= $this->fetch('css') ?><!-- Specified CSS-->
 </head>
 <body class="app sidebar-mini">
 	
-	<?= $this->element('ValiAdmin.navbar') ?>
-	
-	<?= $this->element('ValiAdmin.sidebar_menu') ?>
-	
+<?php	
+		try {
+			echo $this->element('navbar');
+		} catch (\Exception $e) {
+			try {
+				echo $this->element('ValiAdmin.navbar');
+			} catch (\Exception $e) {
+				exit($e->getMessage() . "\n");
+			}
+		}
+
+		try {
+			echo $this->element('sidebar_menu');
+		} catch (\Exception $e) {
+			try {
+				echo $this->element('ValiAdmin.sidebar_menu');
+			} catch (\Exception $e) {
+				exit($e->getMessage() . "\n");
+			}
+		}
+?>
+
 	<main class="app-content">
-	
-		<?= $this->element('ValiAdmin.app_title') ?>
+
+<?php	
+		try {
+			echo $this->element('app_title');
+		} catch (\Exception $e) {
+			try {
+				echo $this->element('ValiAdmin.app_title');
+			} catch (\Exception $e) {
+				exit($e->getMessage() . "\n");
+			}
+		}
+?>
 
 		<?= $this->fetch('content') ?>
 

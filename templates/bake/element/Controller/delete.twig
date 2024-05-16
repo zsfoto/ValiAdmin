@@ -22,45 +22,16 @@
      */
     public function delete($id = null)
     {
-		$paginateOptions = [];
-		$redirect['controller']	= '{{ currentModelName }}';
-		$redirect['action'] 	= 'index';
-
-		$sort 		= $this->request->getQuery('sort') ?? 'id';
-		$direction 	= $this->request->getQuery('direction') ?? 'asc';
-		$limit 		= $this->request->getQuery('limit') ?? 2;
-		$page 		= $this->request->getQuery('page') ?? 1;
-		
         $this->request->allowMethod(['post', 'delete']);
         ${{ singularName }} = $this->{{ currentModelName }}->get($id);
-
         if ($this->{{ currentModelName }}->delete(${{ singularName }})) {
-            //$this->Flash->success(__('The {{ singularHumanName|lower }} has been deleted.'));
-            $this->Flash->success(__('Has been deleted.'));
+			$this->session->delete('Layout.' . $this->controller . '.LastId');
+            //$this->Flash->success(__('The {{ singularHumanName|lower }} has been deleted.'), ['plugin' => 'JeffAdmin5']);
+            $this->Flash->success(__('The has been deleted.'), ['plugin' => 'JeffAdmin5']);
         } else {
-            //$this->Flash->error(__('The {{ singularHumanName|lower }} could not be deleted. Please, try again.'));
-            $this->Flash->error(__('Could not be deleted. Please, try again.'));
+            //$this->Flash->error(__('The {{ singularHumanName|lower }} could not be deleted. Please, try again.'), ['plugin' => 'JeffAdmin5']);
+            $this->Flash->error(__('The has been deleted. Please check the datas and try again.'), ['plugin' => 'JeffAdmin5']);
         }
 
-		if($limit) {
-			$paginateOptions['limit'] = $limit;
-		}
-		if($page) {
-			$paginateOptions['page'] = $page;
-		}
-		
-		$query = $this->{{ currentModelName }}->find();
-		try {
-			${{ pluralName }} = $this->paginate($this->{{ currentModelName }}, $paginateOptions);
-		} catch (NotFoundException $e) {
-			$paging = $e->getPrevious()->getAttributes('pagingParams');
-			$page = $paging['pagingParams']['pageCount'];
-		}			
-
-		$redirect['?']['sort'] 		= $sort;
-		$redirect['?']['direction'] = $direction;
-		$redirect['?']['page'] 		= $page;
-		$redirect['?']['limit'] 	= $limit;
-
-        return $this->redirect($redirect);
+        return $this->redirect(['action' => 'index']);
     }

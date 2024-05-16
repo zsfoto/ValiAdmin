@@ -25,11 +25,11 @@
 	//$this->assign('AppSubTitle', __('Recently {{ pluralVar }}'));
 	$this->assign('BreadCrumbTitle', __('{{ pluralHumanName }}'));
 
-	$sort 		= isset($sort) ? $sort : 'id';
-	$direction 	= isset($direction) ? $direction : 'asc';
-	$limit 		= isset($limit) ? $limit : 2;
-	$page 		= isset($page) ? $page : 1;
-	$lastId		= isset($lastId) ? $lastId : 0;
+	$layout{{ pluralHumanName }}LastId = -1;
+	if($session->check('Layout.{{ pluralHumanName }}.LastId')){
+		$layout{{ pluralHumanName }}LastId = $session->read('Layout.{{ pluralHumanName }}.LastId');
+	}
+
 ?>
 {% set fields = Bake.filterFields(fields, schema, modelObject, indexColumns, ['binary', 'text']) %}
 	<div class="{{ pluralVar }} index row">
@@ -38,7 +38,7 @@
 
 				<div class="tile-title-w-btn">
 					<div class="col-sm-5">
-						<?= $this->Html->link('<i class="bi bi-plus-square fs-5 me-2"></i>' . __('Add New'), ['controller' => '{{ pluralHumanName }}', 'action' => 'add', '?' => compact('sort', 'direction', 'limit', 'page', 'lastId')], ['class' => 'btn btn-primary', 'escapeTitle' => false]) ?>
+						<?= $this->Html->link('<i class="bi bi-plus-square fs-5 me-2"></i>' . __('Add New'), ['controller' => '{{ pluralHumanName }}', 'action' => 'add'], ['class' => 'btn btn-primary', 'escapeTitle' => false]) ?>
 					</div>					
 					<div class="col-sm-7 text-end">
 						<h3><?= __('List {{ pluralHumanName }}') ?></h3>
@@ -63,19 +63,14 @@
 							</thead>
 							<tbody>
 								<?php foreach (${{ pluralVar }} as ${{ singularVar }}): ?>
-								<?php 
-									$lastRowClass = '';
-									if (${{ singularVar }}->id === $lastId){
-										$lastRowClass = ' class="table-primary"';
-									} ?>
-								<tr<?= $lastRowClass ?>>
+								<tr<?php if(${{ singularVar }}->id == $layout{{ pluralHumanName }}LastId){ echo ' class="table-primary"'; } ?>>
 {% for field in fields %}
 {% set isKey = false %}
 {% if associations.BelongsTo is defined %}
 {% for alias, details in associations.BelongsTo %}
 {% if field == details.foreignKey %}
 {% set isKey = true %}
-									<td class="link {{ columnData.type }} {{ field|replace({'_': '-'}) }}"><?= ${{ singularVar }}->hasValue('{{ details.property }}') ? $this->Html->link(${{ singularVar }}->{{ details.property }}->{{ details.displayField }}, ['controller' => '{{ details.controller }}', 'action' => 'view', ${{ singularVar }}->{{ details.property }}->{{ details.primaryKey[0] }}]) : '' ?></td>
+									<td class="link {{ columnData.type }} {{ field|replace({'_': '-'}) }}"><?= ${{ singularVar }}->hasValue('{{ details.property }}') ? $this->Html->link(${{ singularVar }}->{{ details.property }}->{{ details.displayField }}, ['controller' => '{{ details.controller }}', 'action' => 'view', ${{ singularVar }}->{{ details.property }}->{{ details.primaryKey[0] }}]) : '' ?></td><!-- 1. -->
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -86,20 +81,20 @@
 	{%- set colunterFieldClass = ' counter' %}
 {%- endif %}
 {% if columnData.type starts with 'enum-' %}
-									<td class="{{ columnData.type }} {{ field }}"><?= ${{ singularVar }}->{{ field }} === null ? '' : h(${{ singularVar }}->{{ field }}->label()) ?></td>
+									<td class="{{ columnData.type }} {{ field }}"><?= ${{ singularVar }}->{{ field }} === null ? '' : h(${{ singularVar }}->{{ field }}->label()) ?></td><!-- 2. -->
 {% elseif columnData.type not in ['integer', 'float', 'decimal', 'biginteger', 'smallinteger', 'tinyinteger'] %}
-									<td class="{{ columnData.type }} {{ field }}"><?= h(${{ singularVar }}->{{ field }}) ?></td>
+									<td class="{{ columnData.type }} {{ field }}"><?= h(${{ singularVar }}->{{ field }}) ?></td><!-- 3. -->
 {% elseif columnData.null %}
-									<td class="{{ columnData.type }} {{ field }}{{ colunterFieldClass }}"><?= ${{ singularVar }}->{{ field }} === null ? '' : $this->Number->format(${{ singularVar }}->{{ field }}) ?></td>
+									<td class="string {{ field }}{{ colunterFieldClass }}"><?= ${{ singularVar }}->{{ field }} === null ? '' : $this->Number->format(${{ singularVar }}->{{ field }}) ?></td><!-- 4. -->
 {% else %}
-									<td class="{{ columnData.type }} {{ field }}{{ colunterFieldClass }}"><?= $this->Number->format(${{ singularVar }}->{{ field }}) ?></td>
+									<td class="{{ columnData.type }} {{ field }}{{ colunterFieldClass }}"><?= $this->Number->format(${{ singularVar }}->{{ field }}) ?></td><!-- 5. -->
 {% endif %}
 {% endif %}
 {% endfor %}
 {% set pk = '$' ~ singularVar ~ '->' ~ primaryKey[0] %}
 									<td class="actions">
-										<?= $this->Html->link(__('Edit'), ['action' => 'edit', {{ pk|raw }}, '?' => compact('sort', 'direction', 'limit', 'page', 'lastId')], ['escape' => false, 'class' => 'me-3' ]) ?>
-										<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', {{ pk|raw }}], ['data' => ['sort' => $sort, 'direction' => $direction, 'limit' => $limit, 'page' => $page, 'lastId' => $lastId], 'confirm' => __('Are you sure you want to delete # {0}?', {{ pk|raw }})]) ?>
+										<?= $this->Html->link(__('Edit'), ['action' => 'edit', {{ pk|raw }}], ['escape' => false, 'class' => 'me-3' ]) ?>
+										<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', {{ pk|raw }}], ['confirm' => __('Are you sure you want to delete # {0}?', {{ pk|raw }})]) ?>
 									</td>
 								</tr>
 								<?php endforeach; ?>
